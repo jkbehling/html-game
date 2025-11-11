@@ -37,7 +37,7 @@ Outputs and side effects:
 
 Requirements:
 - Jinja2 template at `templates/game.html`
-- Source GIFs under `public/static/game_frames/`
+- Source GIFs under `static/game_frames/`
 
 Usage:
         python3 create_game.py
@@ -60,10 +60,10 @@ def create_gif_copy(name, num):
     """Copy a game frame GIF into the per-run copies folder with an index.
 
     Args:
-        name: Base filename (without extension) found under public/static/game_frames/.
+        name: Base filename (without extension) found under static/game_frames/.
         num:  Zero-based frame index to suffix the copied filename with.
     """
-    shutil.copyfile(f"public/static/game_frames/{name}.gif", f"public/static/game_frame_copies/{name}_{num}.gif")
+    shutil.copyfile(f"static/game_frames/{name}.gif", f"static/game_frame_copies/{name}_{num}.gif")
 
 def generate_tree(length):
     """Generate a valid tree string of the requested odd length.
@@ -102,8 +102,8 @@ def generate_tree(length):
 tree = generate_tree(101)
 
 # Clear the game_frame_copies directory
-shutil.rmtree('public/static/game_frame_copies')
-shutil.os.mkdir('public/static/game_frame_copies')
+shutil.rmtree('static/game_frame_copies')
+shutil.os.mkdir('static/game_frame_copies')
 
 # Set up frames sequence
 sequence = [] # [[success frame, death frame], ...]
@@ -148,6 +148,6 @@ context = {
 
 output = template.render(context)
 
-with open("public/index.html", "w") as f:
+with open("index.html", "w") as f:
     f.write(output)
 

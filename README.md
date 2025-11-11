@@ -20,13 +20,13 @@ python3 create_game.py
 
 This will:
 - Generate a valid tree sequence
-- Clear and repopulate `public/static/game_frame_copies/` with per-step GIF copies
-- Render `public/index.html` from `templates/game.html`
+- Clear and repopulate `static/game_frame_copies/` with per-step GIF copies
+- Render `index.html` from `templates/game.html`
 
 3) Serve the site locally (any static server works). For example:
 
 ```bash
-python3 -m http.server 8000 --directory public
+python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000 in your browser.
@@ -44,15 +44,15 @@ sequence[i] = [
 ]
 ```
 
-The template uses this to decide which popover to show next and which GIF to display. Main frame GIFs are copied to `public/static/game_frame_copies/` as `<basename>_<i>.gif`.
+The template uses this to decide which popover to show next and which GIF to display. Main frame GIFs are copied to `static/game_frame_copies/` as `<basename>_<i>.gif`.
 
 Assets layout
 -------------
 
-- Source frame GIFs: `public/static/game_frames/`
-- Per-run copied frames: `public/static/game_frame_copies/` (auto-cleared/repopulated)
+- Source frame GIFs: `static/game_frames/`
+- Per-run copied frames: `static/game_frame_copies/` (auto-cleared/repopulated)
 - Template: `templates/game.html`
-- Output page: `public/index.html`
+- Output page: `index.html`
 
 
 Non‑commercial educational use
