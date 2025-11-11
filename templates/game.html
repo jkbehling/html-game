@@ -61,7 +61,7 @@
             <td align="center">
                 <div>
                     <audio controls>
-                        <source src="/static/retro-arcade-game-music.mp3" type="audio/mpeg">
+                        <source src="static/retro-arcade-game-music.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
@@ -133,9 +133,9 @@
 
     <div id="start-game" popover="manual">
         {% if sequence[0][0][0] == 'R' %}
-            {{ game_table(0, "/static/game_frames/NL_STILL.png", "popover-0-wrong", "popover-0-correct") }}
+            {{ game_table(0, "static/game_frames/NL_STILL.png", "popover-0-wrong", "popover-0-correct") }}
         {% else %}
-            {{ game_table(0, "/static/game_frames/NR_STILL.png", "popover-0-correct", "popover-0-wrong") }}
+            {{ game_table(0, "static/game_frames/NR_STILL.png", "popover-0-correct", "popover-0-wrong") }}
         {% endif %}
     </div>
 
@@ -146,7 +146,7 @@
             <div id="popover-{{ outerloop_index }}-correct" popover="manual">
                 {{ game_table(
                     outerloop_index + 1, 
-                    "/static/game_frame_copies/" ~ sequence[outerloop_index][0][1] ~ "_" ~ outerloop_index ~ ".gif",
+                    "static/game_frame_copies/" ~ sequence[outerloop_index][0][1] ~ "_" ~ outerloop_index ~ ".gif",
                     "popover-" ~ (outerloop_index + 1) ~ ("-correct" if sequence[outerloop_index + 1][0][0] == 'L' else "-wrong"),
                     "popover-" ~ (outerloop_index + 1) ~ ("-correct" if sequence[outerloop_index + 1][0][0] == 'R' else "-wrong")
                 ) }}
@@ -155,7 +155,7 @@
             <div id="popover-{{ outerloop_index }}-wrong" popover="manual">
                 {{ game_table(
                     outerloop_index + 1, 
-                    "/static/game_frames/" ~ sequence[outerloop_index][1][1] ~ ".gif",
+                    "static/game_frames/" ~ sequence[outerloop_index][1][1] ~ ".gif",
                     "",
                     "",
                     'true'
@@ -165,7 +165,7 @@
     {% endfor %}
 
     <div id="popover-{{ sequence|length - 1 }}-correct" popover="manual">
-        {{ game_table(sequence|length, "/static/game_frames/LNR_WIN.gif", "", "", 'true') }}
+        {{ game_table(sequence|length, "static/game_frames/LNR_WIN.gif", "", "", 'true') }}
     </div>
 
 </body>
