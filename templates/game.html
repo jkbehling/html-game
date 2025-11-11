@@ -1,0 +1,169 @@
+{# Macro for game table with buttons #}
+{% macro game_table(level, image_src, left_commandfor, right_commandfor, play_again='false') %}
+<table><tbody>
+    <tr>
+        {% if play_again == 'false' %}
+        <td align="left">
+            <h1>&nbsp;{{ level }}/{{ sequence|length }}</h1>
+        </td>
+        <td></td>
+        {% else %}
+        <td align="left">
+            <h1>&nbsp;{{ level }}/{{ sequence|length }}</h1>
+        </td>
+        <td align="right">
+            <a href="/"><button><h3>Play Again</h3></button></a>
+        </td>
+        {% endif %}
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="{{ image_src }}" alt="Game GIF" width="300">
+        </td>
+    </tr>
+    <tr>
+        {% if play_again == 'false' %}
+        <td>
+            <button 
+                commandfor="{{ left_commandfor }}"
+                command="show-popover"
+                >
+                <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Left&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+            </button>
+        </td>
+        <td>
+            <button 
+                commandfor="{{ right_commandfor }}"
+                command="show-popover"
+                >
+                <h1>&nbsp;&nbsp;&nbsp;&nbsp;Right&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+            </button>
+        </td>
+        {% else %}
+        <td colspan="2" align="center">
+            <h1>&nbsp;</h1>
+        </td>
+        {% endif %}
+    </tr>
+</tbody></table>
+{% endmacro %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Timberman</title>
+</head>
+<body>
+    <table width="100%"><tbody>
+        <tr>
+            <td align="center">
+                <div>
+                    <audio controls>
+                        <source src="/static/retro-arcade-game-music.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                <div>
+                    <h1>Timberman--Pure HTML Edition</h1>
+                    <button commandfor="how-to-play" command="show-popover"><h2>How to Play</h2></button>
+                    <button commandfor="how-this-was-made" command="show-popover"><h2>How this was Made</h2></button>
+                    <p>&nbsp;</p>
+                </div>
+                <p>&nbsp;</p>
+                <button commandfor="start-game" command="show-popover"><h1>Start Game</h1></button>
+            </td>
+        </tr>
+    </tbody></table>
+
+    <div id="how-to-play" popover="manual">
+        <table width="300px"><tbody>
+            <tr>
+                <td align="left">
+                    <h2>How to Play</h2>
+                </td>
+                <td align="right">
+                    <button commandfor="how-to-play" command="hide-popover"><h2>X</h2></button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>
+                        Welcome to Timberman--Pure HTML Edition! In this game, you play as a lumberjack trying to chop down a tree while avoiding branches.
+                        Use the Left and Right buttons to chop on the respective sides of the tree. 
+                        If you chop on the side with a branch, it's game over!
+                        Play the audio above to track your time and to enjoy some background music while you chop.
+                    </p>
+                    <p>Good luck and have fun!</p>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+
+    <div id="how-this-was-made" popover="manual">
+        <table width="300px"><tbody>
+            <tr>
+                <td align="left">
+                    <h2>How this was Made</h2>
+                </td>
+                <td align="right">
+                    <button commandfor="how-this-was-made" command="hide-popover"><h2>X</h2></button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p>
+                        This game was created using just HTML. That's right, no JavaScript or CSS!
+                        The game logic is driven by popovers and buttons, with each game state represented by a different popover.
+                        The images are GIFs that play once to show the chopping action and the result of the player's choice.
+                        Each new popover displays over the previous one, creating a seamless game experience.
+                    </p>
+                    <p>
+                        This project is an educational, non-commercial recreation and is intended for learning and demonstration purposes only. 
+                        All credit for the original game concept, design, and assets goes to the Digital Melody team. I make no claim of ownership over
+                        the original intellectual property and do not profit from this project.
+                    </p>
+                </td>
+        </tbody></table>
+    </div>
+
+    <div id="start-game" popover="manual">
+        {% if sequence[0][0][0] == 'R' %}
+            {{ game_table(0, "/static/game_frames/NL_STILL.png", "popover-0-wrong", "popover-0-correct") }}
+        {% else %}
+            {{ game_table(0, "/static/game_frames/NR_STILL.png", "popover-0-correct", "popover-0-wrong") }}
+        {% endif %}
+    </div>
+
+    {% for frames in sequence %}
+        {# Subtract 1 from the outer loop index so it's zero based #}
+        {% set outerloop_index = loop.index - 1 %}
+        {% if outerloop_index + 1 < sequence|length %}
+            <div id="popover-{{ outerloop_index }}-correct" popover="manual">
+                {{ game_table(
+                    outerloop_index + 1, 
+                    "/static/game_frame_copies/" ~ sequence[outerloop_index][0][1] ~ "_" ~ outerloop_index ~ ".gif",
+                    "popover-" ~ (outerloop_index + 1) ~ ("-correct" if sequence[outerloop_index + 1][0][0] == 'L' else "-wrong"),
+                    "popover-" ~ (outerloop_index + 1) ~ ("-correct" if sequence[outerloop_index + 1][0][0] == 'R' else "-wrong")
+                ) }}
+            </div>
+
+            <div id="popover-{{ outerloop_index }}-wrong" popover="manual">
+                {{ game_table(
+                    outerloop_index + 1, 
+                    "/static/game_frames/" ~ sequence[outerloop_index][1][1] ~ ".gif",
+                    "",
+                    "",
+                    'true'
+                ) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div id="popover-{{ sequence|length - 1 }}-correct" popover="manual">
+        {{ game_table(sequence|length, "/static/game_frames/LNR_WIN.gif", "", "", 'true') }}
+    </div>
+
+</body>
+</html>
